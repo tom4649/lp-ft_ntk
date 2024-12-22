@@ -1,8 +1,10 @@
-# Understanding Linear Probing then Fine-tuning Language Models from NTK Perspective
+# Understanding Linear Probing then Fine-tuning Language Models from NTK Perspective (NeurIPS 2024)
 
 This repository contains the code for our paper:
 
-> [Understanding Linear Probing then Fine-tuning Language Models from NTK Perspective](https://arxiv.org/abs/2405.16747). Akiyoshi Tomihari and Issei Sato.
+> Understanding Linear Probing then Fine-tuning Language Models from NTK Perspective. Akiyoshi Tomihari and Issei Sato.
+[arXiv](https://arxiv.org/abs/2405.16747)
+[OpenReview](https://openreview.net/forum?id=1v4gKsyGfe&referrer=%5Bthe%20profile%20of%20Issei%20Sato%5D(%2Fprofile%3Fid%3D~Issei_Sato2))
 
 ## Dependencies
 The main dependencies are:
@@ -72,12 +74,12 @@ We use the following resources and libraries:
 ## Citation
 ```bibtex
 
-@misc{tomihari2024understanding,
-      title={Understanding Linear Probing then Fine-tuning Language Models from NTK Perspective},
-      author={Akiyoshi Tomihari and Issei Sato},
-      year={2024},
-      eprint={2405.16747},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@inproceedings{
+  tomihari2024understanding,
+  title={Understanding Linear Probing then Fine-tuning Language Models from NTK Perspective},
+  author={Akiyoshi Tomihari and Issei Sato},
+  booktitle={The Thirty-eighth Annual Conference on Neural Information Processing Systems},
+  year={2024},
+  url={https://openreview.net/forum?id=1v4gKsyGfe}
 }
 ```

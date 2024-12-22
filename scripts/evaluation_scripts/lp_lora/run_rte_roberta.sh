@@ -22,7 +22,7 @@ do
     --per_device_train_batch_size $bs \
     --learning_rate $lr \
     --num_train_epochs $epoch \
-    --output_dir results/evaluation/roberta/$DATASET_NAME/ft/$loss_option/seed_$seed/ \
+    --output_dir results/evaluation/roberta/$DATASET_NAME/lora/$loss_option/seed_$seed/ \
     --overwrite_output_dir \
     --seed $seed \
     --model_seed $seed\

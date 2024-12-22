@@ -37,6 +37,7 @@ from transformers.utils import logging
 
 logger = logging.get_logger(__name__)
 
+
 def get_token_prediction_layer(model):
     # if isinstance(model, transformers.RobertaForSequenceClassificationLinear):
     if hasattr(model, "classifier"):
@@ -46,16 +47,17 @@ def get_token_prediction_layer(model):
     else:
         raise NotImplementedError(model.__class__)
 
+
 def extract_features(model, *args, **kwargs):
     """some magic for getting features pre last layer"""
     features = {}
-    if hasattr(model, "classifier"): # RobertaForSequenceClassificationLinear
+    if hasattr(model, "classifier"):  # RobertaForSequenceClassificationLinear
 
         def hook(model_, input_, output_):
             features["features"] = input_[0].detach()
 
         get_token_prediction_layer(model).register_forward_hook(hook)
-    elif hasattr(model, "score"): # GPT2ForSequenceClassification
+    elif hasattr(model, "score"):  # GPT2ForSequenceClassification
 
         def hook(model_, input_, output_):
             if len(input_) == 0:
@@ -93,14 +95,15 @@ def get_features_tensor(model, train_dataloader, device):
                     v = v.to(device)
                 inputs_[k] = v
             feature = extract_features(model, **inputs_)
-            features.append(feature.cpu())  # GPUからCPUにデータを移動
-            targets.append(inputs["labels"].cpu())  # 同様にターゲットもCPUに移動
+            features.append(feature.cpu())
+            targets.append(inputs["labels"].cpu())
 
-            del feature  # GPUメモリから削除
-            torch.cuda.empty_cache()  # キャッシュをクリア
+            del feature
+            torch.cuda.empty_cache()
     features = torch.cat(features, dim=0).to(device)
     targets = torch.cat(targets, dim=0).to(device)
     return features, targets
+
 
 def tensor_all_gather(tensor: torch.Tensor, distributed_world_size: int):
     tensor_list = [torch.zeros_like(tensor) for _ in range(distributed_world_size)]
@@ -130,6 +133,7 @@ def varsize_tensor_all_gather(tensor: torch.Tensor, distributed_world_size: int)
             slices.append(ag[start_idx:end_idx])
 
     return torch.cat(slices, dim=0)
+
 
 def train_linear_head(
     model,
@@ -218,6 +222,7 @@ def coef_to_tensor(reg, model, use_bias):
 
     return coef_torch, bias_torch
 
+
 class LinearHeadTrainer(Trainer):
     """
     Adding some functions based on Transformers' Trainer class.
@@ -230,7 +235,6 @@ class LinearHeadTrainer(Trainer):
         Main training entry point.
 
         The training logic is directly borrowed from transformers.Trainer (version 3.0.2).
-        _ でstageを分割
         Loss:["normal", "lp", "lp_ft"]
         """
         self.best_dir = None

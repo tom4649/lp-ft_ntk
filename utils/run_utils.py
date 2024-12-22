@@ -23,6 +23,7 @@ def setup_library(training_args):
     training_args.disable_tqdm = True
     return training_args
 
+
 def train(trainer):
     train_result = trainer.train()
     if train_result is None:
@@ -33,6 +34,7 @@ def train(trainer):
     trainer.log_metrics("train", metrics)
     trainer.save_metrics("train", metrics)
     trainer.save_state()
+
 
 def evaluate(trainer):
     logger.info("*** Evaluate ***")
@@ -50,6 +52,7 @@ def predict(trainer, predict_dataset=None):
     trainer.save_metrics("test", predictions.metrics)
     trainer.log(predictions.metrics)
     return
+
 
 def predict_ood(args, trainer):
     original_output_dir = trainer.args.output_dir
@@ -71,14 +74,12 @@ def predict_ood(args, trainer):
     trainer.args.output_dir = original_output_dir
     return
 
+
 def check_output_dir(training_args):
     to_continue = True
     if training_args.do_train:
         output_dir_path = pathlib.Path(training_args.output_dir)
-        if (
-            output_dir_path.exists()
-            and any(output_dir_path.iterdir())
-        ):
+        if output_dir_path.exists() and any(output_dir_path.iterdir()):
             if not training_args.overwrite_output_dir:
                 logger.info(
                     f" `file exists in ({training_args.output_dir}) and --overwrite_output_dir` is not True, so exit."
@@ -89,5 +90,3 @@ def check_output_dir(training_args):
                     f" file exists in ({training_args.output_dir}), but `--overwrite_output_dir` is True, so continue."
                 )
     return to_continue
-
-
